@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>REXX CPM STORE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#e4e4e2;--panel:#f3f3f1;--ink:#26272a;--mute:#66686d;--line:#c5c6c4;--y:#f5b800;--yd:#c99400;--on-y:#1d1d1f;--hdr:#2b2c2f;--hdr-ink:#f1f1ef;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f2022;--panel:#2a2b2e;--ink:#ececea;--mute:#a0a2a7;--line:#3d3e42;--hdr:#161617}}
+:root[data-theme="dark"]{--bg:#1f2022;--panel:#2a2b2e;--ink:#ececea;--mute:#a0a2a7;--line:#3d3e42;--hdr:#161617}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Barlow,system-ui,Arial,sans-serif}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;font-weight:800;margin:0;line-height:1.05}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+.btn{background:var(--y);color:var(--on-y);border:0;padding:.7rem 1.2rem;font-weight:600;border-radius:4px;cursor:pointer}
+.btn:hover{background:var(--yd)}
+.btn.ghost{background:transparent;color:inherit;border:2px solid currentColor}
+.btn.sm{padding:.4rem .8rem;font-size:.9rem}
+.btn.red{background:#b3372f;color:#fff}
+header{position:sticky;top:0;z-index:20;background:var(--hdr);color:var(--hdr-ink);display:flex;align-items:center;gap:1rem;padding:.7rem 1.2rem;padding-top:calc(.7rem + env(safe-area-inset-top,0px))}
+.logo{font:800 1.6rem "Barlow Condensed",Arial,sans-serif;letter-spacing:.04em;margin-right:auto}
+.logo span{background:var(--y);color:var(--on-y);padding:0 .35rem;margin-right:.3rem}
+header a{color:inherit;text-decoration:none;font-weight:500}
+header a:hover{color:var(--y)}
+.nav{display:flex;gap:1.2rem;align-items:center}
+.cartbtn{position:relative}
+.badge{background:var(--y);color:var(--on-y);border-radius:99px;font-size:.75rem;font-weight:700;padding:0 .45rem;margin-left:.3rem}
+.hero{background:var(--hdr);color:var(--hdr-ink);padding:4rem 1.2rem 5rem;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:18px;background:repeating-linear-gradient(-45deg,var(--y) 0 22px,#2b2c2f 22px 44px)}
+.hero-in{max-width:1100px;margin:auto;display:flex;flex-wrap:wrap;gap:2rem;align-items:center}
+.hero-in>div{flex:1 1 320px}
+.hero h1{font-size:clamp(3rem,9vw,6rem);text-transform:uppercase}
+.hero h1 b{color:var(--y)}
+.hero p{max-width:46ch;color:#c9cacd;margin:1rem 0 1.5rem}
+.plate{flex:0 1 300px;background:var(--y);color:var(--on-y);border:6px solid #1d1d1f;border-radius:10px;text-align:center;padding:1.2rem 1rem;transform:rotate(-3deg);box-shadow:0 10px 0 rgba(0,0,0,.35)}
+.plate big{display:block;font:800 4.2rem/1 "Barlow Condensed",Arial,sans-serif;letter-spacing:.08em}
+.plate small{font-weight:600}
+section{max-width:1100px;margin:auto;padding:3rem 1.2rem}
+section h2{font-size:2.4rem;margin-bottom:1.2rem}
+.tools{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.tools input,.tools select{background:var(--panel);border:1px solid var(--line);padding:.6rem .8rem;border-radius:4px}
+.tools input{flex:1 1 220px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem}
+.car{background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;border-bottom:5px solid var(--y)}
+.pic{aspect-ratio:16/10;background:linear-gradient(135deg,#4a4b4f,#2b2c2f);display:grid;place-items:center;font-size:4rem;overflow:hidden}
+.pic img{width:100%;height:100%;object-fit:cover}
+.car .in{padding:1rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.car h3{font-size:1.5rem}
+.car p{margin:0;color:var(--mute);font-size:.95rem;flex:1}
+.price{font:800 1.6rem "Barlow Condensed",Arial,sans-serif}
+.row{display:flex;align-items:center;justify-content:space-between;gap:.6rem}
+.empty{padding:2rem;border:2px dashed var(--line);border-radius:6px;color:var(--mute);text-align:center;grid-column:1/-1}
+#contact{background:var(--panel);max-width:none;border-top:1px solid var(--line)}
+.contact-in{max-width:1100px;margin:auto;display:flex;flex-wrap:wrap;gap:2rem;align-items:center;justify-content:space-between}
+.phone{font:800 clamp(2rem,6vw,3.4rem) "Barlow Condensed",Arial,sans-serif;background:var(--y);color:var(--on-y);padding:.2rem 1rem;display:inline-block;border-radius:4px;text-decoration:none}
+footer{background:var(--hdr);color:#b9babd;text-align:center;padding:1.2rem;padding-bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));font-size:.9rem}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:none;justify-content:flex-end}
+.overlay.open{display:flex}
+.drawer{background:var(--bg);width:min(460px,100%);height:100%;overflow-y:auto;padding:1.2rem;padding-top:calc(1.2rem + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:1rem}
+.drawer.wide{width:min(720px,100%)}
+.drawer h2{font-size:2rem}
+.top{display:flex;justify-content:space-between;align-items:center}
+.item{display:flex;gap:.8rem;align-items:center;background:var(--panel);border:1px solid var(--line);padding:.6rem;border-radius:6px}
+.item .t{width:64px;height:48px;background:#3a3b3f;border-radius:4px;display:grid;place-items:center;font-size:1.6rem;overflow:hidden;flex:none}
+.item .t img{width:100%;height:100%;object-fit:cover}
+.item .n{flex:1;min-width:0}
+.item .n b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+label{display:block;font-weight:600;margin-top:.7rem;font-size:.92rem}
+.f{width:100%;background:var(--panel);border:1px solid var(--line);padding:.6rem .7rem;border-radius:4px;margin-top:.25rem}
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap}
+.tabs button{background:var(--panel);border:1px solid var(--line);padding:.4rem .9rem;border-radius:4px;cursor:pointer}
+.tabs button.on{background:var(--y);color:var(--on-y);border-color:var(--y);font-weight:600}
+.note{background:var(--panel);border-left:5px solid var(--y);padding:.7rem 1rem;font-size:.92rem;color:var(--mute)}
+.total{display:flex;justify-content:space-between;font:800 1.8rem "Barlow Condensed",Arial,sans-serif;border-top:2px solid var(--ink);padding-top:.6rem}
+.toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.6rem 1.1rem;border-radius:4px;z-index:60;display:none}
+.order{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:.7rem;font-size:.92rem}
+@media(max-width:640px){.nav a.hide{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span>REXX</span>CPM STORE</div>
+  <nav class="nav">
+    <a class="hide" href="#cars">Cars</a>
+    <a class="hide" href="#contact">Contact</a>
+    <a href="#" id="adminOpen">Admin</a>
+    <a href="#" class="cartbtn" id="cartOpen">Cart<span class="badge" id="count">0</span></a>
+  </nav>
+</header>
+
+<div class="hero"><div class="hero-in">
+  <div>
+    <h1>Find your <b>dream car</b> today</h1>
+    <p>Browse the REXX CPM STORE lineup, add your pick to the cart and place your order in a minute.</p>
+    <a class="btn" href="#cars" style="text-decoration:none;display:inline-block">Browse cars</a>
+  </div>
+  <div class="plate"><small>Welcome to</small><big>REXX</big><small>CPM STORE</small></div>
+</div></div>
+
+<section id="cars">
+  <h2>Cars for sale</h2>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Search cars by name" aria-label="Search cars">
+    <select id="sort" aria-label="Sort cars"><option value="new">Newest first</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option></select>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="contact"><div class="contact-in">
+  <div>
+    <h2>Talk to us</h2>
+    <p id="cmsg" style="margin:0 0 1rem;max-width:42ch">Questions about a car or your order? Call or message us.</p>
+    <a class="phone" id="phone" href="#">03158727583</a>
+  </div>
+  <div style="display:flex;gap:.8rem;flex-wrap:wrap"><a class="btn" id="wa" href="#" target="_blank" rel="noopener">Chat on WhatsApp</a><a class="btn ghost" href="https://www.tiktok.com/@rexx_cpm" target="_blank" rel="noopener">TikTok @rexx_cpm</a></div>
+</div></section>
+
+<footer>© <span id="yr"></span> REXX CPM STORE · TikTok @rexx_cpm · Payments by JazzCash</footer>
+
+<div class="overlay" id="cartOv"><div class="drawer" role="dialog" aria-label="Cart">
+  <div class="top"><h2>Your cart</h2><button class="btn ghost sm" data-close>Close</button></div>
+  <div id="cartList"></div>
+  <div class="total"><span>Total</span><span id="total">$0</span></div>
+  <div id="checkout">
+    <label>Full name<input class="f" id="cName" autocomplete="name"></label>
+    <label>Phone / WhatsApp number<input class="f" id="cPhone" type="tel" autocomplete="tel"></label>
+    <label>Payment method<select class="f" id="cPay"></select></label>
+    <div class="note" id="payInfo"></div>
+    <label>Transaction ID or payment note<input class="f" id="cTx" placeholder="Enter after you pay"></label>
+    <button class="btn" id="placeBtn" style="width:100%;margin-top:1rem">Place order</button>
+  </div>
+</div></div>
+
+<div class="overlay" id="adminOv"><div class="drawer wide" role="dialog" aria-label="Admin panel">
+  <div class="top"><h2>Admin panel</h2><button class="btn ghost sm" data-close>Close</button></div>
+  <div id="login">
+    <label>Admin email<input class="f" id="em" type="email" autocomplete="username"></label>
+    <label>Admin password<input class="f" id="pw" type="password" autocomplete="current-password"></label>
+    <button class="btn" id="loginBtn" style="margin-top:1rem">Log in</button>
+    <p class="note">Log in with the admin email and password you created in Supabase.</p>
+  </div>
+  <div id="panel" hidden>
+    <div class="tabs" id="tabs">
+      <button data-t="add" class="on">Add car</button><button data-t="manage">Manage cars</button><button data-t="orders">Orders</button><button data-t="settings">Account</button>
+    </div>
+    <div id="t-add">
+      <label>Car name<input class="f" id="aName"></label>
+      <label>Price (number only)<input class="f" id="aPrice" type="number" min="0"></label>
+      <label>Description<textarea class="f" id="aDesc" rows="3"></textarea></label>
+      <label>Photo<input class="f" id="aImg" type="file" accept="image/*"></label>
+      <button class="btn" id="addBtn" style="margin-top:1rem">Add car</button>
+    </div>
+    <div id="t-manage" hidden></div>
+    <div id="t-orders" hidden></div>
+    <div id="t-settings" hidden><p class="note">Your contact number and payment text are set in the store file.</p><button class="btn ghost" id="logout" style="margin-top:1rem">Log out</button></div>
+  </div>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var SB="https://opfwghnjzncdlwugtlgm.supabase.co",KEY="sb_publishable_gWAn-VzXJqi92OBVwVHyXg_3rTkG4vX",TOKEN=null;
+var SET={phone:"03158727583",wa:"923158727583",cur:"Rs ",pay:"JazzCash | Send the total amount to our JazzCash account, then enter the transaction ID below. Message us on WhatsApp if you need the account details."};
+var S={cars:[],cart:[],orders:[],set:SET};
+function api(path,o){o=o||{};var h={apikey:KEY,Authorization:"Bearer "+(TOKEN||KEY),"Content-Type":"application/json"};if(o.prefer)h.Prefer=o.prefer;
+ return fetch(SB+path,{method:o.method||"GET",headers:h,body:o.body?JSON.stringify(o.body):undefined}).then(function(r){
+  if(!r.ok)return r.text().then(function(t){throw new Error(t)});
+  return r.text().then(function(t){return t?JSON.parse(t):null})})}
+function load(){try{S.cart=JSON.parse(localStorage.getItem("rexx_cart")||"[]")}catch(e){S.cart=[]}}
+function save(){try{localStorage.setItem("rexx_cart",JSON.stringify(S.cart))}catch(e){}}
+function fetchCars(){return api("/rest/v1/cars?select=*&order=id.desc").then(function(r){
+ S.cars=r.map(function(c){return{id:c.id,name:c.name,price:Number(c.price),desc:c.description||"",img:c.image||"",emoji:"🚗"}});
+ renderCars();renderCart();renderManage()}).catch(function(){toast("Could not load cars. Check your internet.")})}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function money(n){return S.set.cur+Number(n).toLocaleString()}
+function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(function(){t.style.display="none"},2600)}
+function thumb(c){return c.img?'<img alt="'+esc(c.name)+'" src="'+c.img+'">':(c.emoji||"🚗")}
+function payList(){return S.set.pay.split("\n").map(function(l){var p=l.split("|");return{n:(p[0]||"").trim(),i:(p[1]||"").trim()}}).filter(function(x){return x.n})}
+
+function renderCars(){
+ var q=$("q").value.toLowerCase(),s=$("sort").value;
+ var list=S.cars.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1});
+ if(s==="lo")list.sort(function(a,b){return a.price-b.price});
+ else if(s==="hi")list.sort(function(a,b){return b.price-a.price});
+ else list.sort(function(a,b){return b.id-a.id});
+ $("grid").innerHTML=list.length?list.map(function(c){
+  return '<article class="car"><div class="pic">'+thumb(c)+'</div><div class="in"><h3>'+esc(c.name)+'</h3><p>'+esc(c.desc)+'</p><div class="row"><span class="price">'+money(c.price)+'</span><button class="btn sm" data-add="'+c.id+'">Add to cart</button></div></div></article>'
+ }).join(""):'<div class="empty">No cars found. Try a different search, or add cars from the admin panel.</div>';
+}
+function renderContact(){
+ var p=S.set.phone,d=p.replace(/[^\d+]/g,"");
+ $("phone").textContent=p;$("phone").href="tel:"+d;
+ var w=(S.set.wa||d).replace(/\D/g,"");
+ $("wa").href=w?"https://wa.me/"+w:"#";
+}
+function renderCart(){
+ var n=S.cart.reduce(function(a,c){return a+c.qty},0);$("count").textContent=n;
+ var tot=0;
+ $("cartList").innerHTML=S.cart.length?S.cart.map(function(i){
+  var c=S.cars.filter(function(x){return x.id===i.id})[0];if(!c)return"";
+  tot+=c.price*i.qty;
+  return '<div class="item"><div class="t">'+thumb(c)+'</div><div class="n"><b>'+esc(c.name)+'</b><span>'+money(c.price)+' × '+i.qty+'</span></div><button class="btn ghost sm" data-rm="'+c.id+'" aria-label="Remove '+esc(c.name)+'">Remove</button></div>'
+ }).join(""):'<div class="empty">Your cart is empty. Add a car to get started.</div>';
+ $("total").textContent=money(tot);
+ $("checkout").style.display=S.cart.length?"block":"none";
+ var pl=payList();$("cPay").innerHTML=pl.map(function(p,i){return'<option value="'+i+'">'+esc(p.n)+'</option>'}).join("");
+ showPay();
+}
+function showPay(){var pl=payList(),p=pl[$("cPay").value||0];$("payInfo").textContent=p?p.i:""}
+function cartTotal(){return S.cart.reduce(function(a,i){var c=S.cars.filter(function(x){return x.id===i.id})[0];return a+(c?c.price*i.qty:0)},0)}
+
+function renderManage(){
+ $("t-manage").innerHTML=S.cars.length?S.cars.map(function(c){return'<div class="item" style="margin-top:.6rem"><div class="t">'+thumb(c)+'</div><div class="n"><b>'+esc(c.name)+'</b><span>'+money(c.price)+'</span></div><button class="btn red sm" data-del="'+c.id+'">Delete</button></div>'}).join(""):'<div class="empty" style="margin-top:.8rem">No cars yet. Use the Add car tab.</div>';
+}
+function renderOrders(){
+ if(!TOKEN)return;
+ api("/rest/v1/orders?select=*&order=id.desc").then(function(r){
+  $("t-orders").innerHTML=r.length?r.map(function(o){return'<div class="order" style="margin-top:.6rem"><b>#'+o.id+'</b> · '+esc(o.name)+' · '+esc(o.phone)+'<br>'+esc(o.items)+'<br><b>'+esc(o.total)+'</b> via '+esc(o.pay)+(o.tx?' (ref: '+esc(o.tx)+')':'')+'<br><small>'+new Date(o.created_at).toLocaleString()+'</small></div>'}).join(""):'<div class="empty" style="margin-top:.8rem">No orders yet. New orders will show up here.</div>'
+ }).catch(function(){$("t-orders").innerHTML='<div class="empty" style="margin-top:.8rem">Could not load orders.</div>'})}
+
+function open(id){$(id).classList.add("open")}
+function closeAll(){["cartOv","adminOv"].forEach(function(i){$(i).classList.remove("open")})}
+document.querySelectorAll("[data-close]").forEach(function(b){b.onclick=closeAll});
+["cartOv","adminOv"].forEach(function(i){$(i).addEventListener("click",function(e){if(e.target===this)closeAll()})});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAll()});
+$("cartOpen").onclick=function(e){e.preventDefault();renderCart();open("cartOv")};
+$("adminOpen").onclick=function(e){e.preventDefault();open("adminOv")};
+
+$("grid").onclick=function(e){var id=e.target.getAttribute("data-add");if(!id)return;id=+id;
+ var f=S.cart.filter(function(i){return i.id===id})[0];if(f)f.qty++;else S.cart.push({id:id,qty:1});
+ save();renderCart();toast("Added to cart")};
+$("cartList").onclick=function(e){var id=e.target.getAttribute("data-rm");if(!id)return;
+ S.cart=S.cart.filter(function(i){return i.id!==+id});save();renderCart()};
+$("q").oninput=renderCars;$("sort").onchange=renderCars;$("cPay").onchange=showPay;
+
+$("placeBtn").onclick=function(){
+ var n=$("cName").value.trim(),p=$("cPhone").value.trim();
+ if(!n||!p){toast("Enter your name and phone number first");return}
+ var pl=payList()[$("cPay").value||0]||{n:"Not set"};
+ var items=S.cart.map(function(i){var c=S.cars.filter(function(x){return x.id===i.id})[0];return c?c.name+" ×"+i.qty:""}).filter(Boolean).join(", ");
+ var o={id:Date.now().toString().slice(-6),name:n,phone:p,items:items,total:money(cartTotal()),pay:pl.n,tx:$("cTx").value.trim(),date:new Date().toLocaleString()};
+ api("/rest/v1/orders",{method:"POST",prefer:"return=minimal",body:{name:n,phone:p,items:items,total:o.total,pay:pl.n,tx:o.tx}}).catch(function(){});S.cart=[];save();renderCart();closeAll();
+ var msg="New order #"+o.id+" from REXX CPM STORE%0AName: "+encodeURIComponent(n)+"%0APhone: "+encodeURIComponent(p)+"%0ACars: "+encodeURIComponent(items)+"%0ATotal: "+encodeURIComponent(o.total)+"%0APayment: "+encodeURIComponent(pl.n)+(o.tx?"%0ARef: "+encodeURIComponent(o.tx):"");
+ var w=(S.set.wa||S.set.phone).replace(/\D/g,"");
+ $("cName").value="";$("cPhone").value="";$("cTx").value="";
+ toast("Order #"+o.id+" placed. Opening WhatsApp to confirm.");
+ if(w)window.open("https://wa.me/"+w+"?text="+msg,"_blank","noopener");
+};
+
+$("loginBtn").onclick=function(){
+ api("/auth/v1/token?grant_type=password",{method:"POST",body:{email:$("em").value.trim(),password:$("pw").value}}).then(function(r){
+  TOKEN=r.access_token;$("login").hidden=true;$("panel").hidden=false;$("pw").value="";renderManage();renderOrders()
+ }).catch(function(){toast("Wrong email or password. Try again.")})};
+$("pw").onkeydown=function(e){if(e.key==="Enter")$("loginBtn").click()};
+$("logout").onclick=function(){TOKEN=null;$("panel").hidden=true;$("login").hidden=false};
+$("tabs").onclick=function(e){var t=e.target.getAttribute("data-t");if(!t)return;
+ this.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b===e.target)});
+ ["add","manage","orders","settings"].forEach(function(k){$("t-"+k).hidden=k!==t});
+ if(t==="manage")renderManage();if(t==="orders")renderOrders()};
+
+function shrink(file,cb){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){
+ var m=700,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");
+ c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+ cb(c.toDataURL("image/jpeg",.7))};im.onerror=function(){cb("")};im.src=r.result};r.readAsDataURL(file)}
+$("addBtn").onclick=function(){
+ var n=$("aName").value.trim(),p=parseFloat($("aPrice").value);
+ if(!n||isNaN(p)){toast("Enter a car name and a price");return}
+ var f=$("aImg").files[0];
+ function done(img){api("/rest/v1/cars",{method:"POST",prefer:"return=minimal",body:{name:n,price:p,description:$("aDesc").value.trim()||"No description yet.",image:img}}).then(function(){
+  $("aName").value="";$("aPrice").value="";$("aDesc").value="";$("aImg").value="";toast("Car added");return fetchCars()
+ }).catch(function(){toast("Could not add the car. Log in again and retry.")})}
+ if(f)shrink(f,done);else done("")};
+$("t-manage").onclick=function(e){var id=e.target.getAttribute("data-del");if(!id)return;
+ api("/rest/v1/cars?id=eq."+id,{method:"DELETE"}).then(function(){S.cart=S.cart.filter(function(i){return i.id!==+id});save();toast("Car deleted");return fetchCars()}).catch(function(){toast("Could not delete. Log in again.")})};
+
+
+$("yr").textContent=new Date().getFullYear();
+load();renderContact();renderCars();renderCart();fetchCars();
+})();
+</script>
+</body>
+</html>
